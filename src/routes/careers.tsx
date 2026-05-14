@@ -4,15 +4,6 @@ import { Briefcase, MapPin, Clock, ArrowRight, Heart, Coffee, Sparkles, Users, M
 import { FadeIn } from "@/components/site/Motion";
 import { PageHero, Section, SectionHeader } from "@/components/site/Layout";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -138,7 +129,7 @@ const jobs = [
 
 function CareersPage() {
   const [form, setForm] = useState({ name: "", email: "", role: jobs[0].role, exp: "", message: "" });
-  const [selectedJob, setSelectedJob] = useState<typeof jobs[0] | null>(null);
+  const [expandedRole, setExpandedRole] = useState<string | null>(null);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,13 +155,11 @@ function CareersPage() {
             { icon: Users, t: "Senior-led teams", d: "Mentors who actually have time to mentor." },
             { icon: Coffee, t: "Hybrid Bengaluru", d: "Three offices, smart remote, no chaos." },
           ].map((c, i) => (
-            <FadeIn key={c.t} delay={i * 0.06}>
-              <div className="glass-card rounded-2xl p-6 h-full">
-                <c.icon className="w-7 h-7 text-primary mb-3" />
-                <h3 className="font-semibold">{c.t}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{c.d}</p>
-              </div>
-            </FadeIn>
+            <div key={c.t} className="glass-card rounded-2xl p-6 h-full">
+              <c.icon className="w-7 h-7 text-primary mb-3" />
+              <h3 className="font-semibold">{c.t}</h3>
+              <p className="mt-1.5 text-sm text-muted-foreground">{c.d}</p>
+            </div>
           ))}
         </div>
       </Section>
@@ -178,16 +167,16 @@ function CareersPage() {
       {/* Jobs */}
       <Section>
         <SectionHeader eyebrow="Open roles" title="We're growing across engineering, design, and growth." />
-        <div className="space-y-3 max-w-4xl mx-auto">
-          {jobs.map((j, i) => (
-            <FadeIn key={j.role} delay={i * 0.04}>
-              <div className="glass-card rounded-2xl p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 hover:shadow-glow transition-smooth">
+        <div className="space-y-4 max-w-4xl mx-auto">
+          {jobs.map((j) => (
+            <div key={j.role} className="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+              <div className="p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex items-start gap-4">
                   <span className="inline-flex w-11 h-11 rounded-xl gradient-primary items-center justify-center shrink-0">
                     <Briefcase className="w-5 h-5 text-primary-foreground" />
                   </span>
                   <div>
-                    <h3 className="font-display font-semibold">{j.role}</h3>
+                    <h3 className="font-display font-semibold text-lg">{j.role}</h3>
                     <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {j.type}</span>
                       <span>{j.level}</span>
@@ -198,68 +187,54 @@ function CareersPage() {
 
                 <button
                   onClick={() => {
-                    setSelectedJob(j);
+                    setExpandedRole(expandedRole === j.role ? null : j.role);
                     setForm((f) => ({ ...f, role: j.role }));
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth self-start md:self-center"
+                  className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth self-start md:self-center shadow-sm"
                 >
-                  Apply <ArrowRight className="w-4 h-4" />
+                  {expandedRole === j.role ? "Close Details" : "View Details & Apply"}
+                  <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${expandedRole === j.role ? 'rotate-90' : ''}`} />
                 </button>
               </div>
-            </FadeIn>
-          ))}
-        </div>
 
-        <Dialog open={!!selectedJob} onOpenChange={(open) => !open && setSelectedJob(null)}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            {selectedJob && (
-              <>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-display font-bold">
-                    {selectedJob.role}
-                  </DialogTitle>
-                  <DialogDescription className="flex items-center gap-4 mt-2">
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {selectedJob.type}</span>
-                    <span>{selectedJob.level}</span>
-                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {selectedJob.loc}</span>
-                  </DialogDescription>
-                </DialogHeader>
-
-                <div className="py-6 space-y-6">
-                  <div>
-                    <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Description</h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{selectedJob.description}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Requirements</h4>
-                    <ul className="space-y-2">
-                      {selectedJob.requirements.map((req, idx) => (
-                        <li key={idx} className="text-sm flex items-start gap-2 text-muted-foreground">
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                          {req}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                    <div className="flex items-center gap-3 mb-2">
-                      <Mail className="w-5 h-5 text-primary" />
-                      <h4 className="font-semibold">How to Apply</h4>
+              {/* Inline Job Description */}
+              {expandedRole === j.role && (
+                <div className="px-6 pb-8 pt-2 border-t border-border/50 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="grid md:grid-cols-2 gap-8 mt-4">
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-[10px]">About the role</h4>
+                        <p className="text-sm leading-relaxed text-muted-foreground">{j.description}</p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Mail className="w-4 h-4 text-primary" />
+                          <h4 className="font-semibold text-sm">Apply via Email</h4>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Send your resume and portfolio to:
+                          <a href="mailto:hr@xciencia.com" className="block mt-1 font-bold text-primary hover:underline">hr@xciencia.com</a>
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      To apply for this position, please send your updated resume and portfolio link to:
-                      <a href="mailto:hr@xciencia.com" className="block mt-1 font-bold text-primary hover:underline">hr@xciencia.com</a>
-                    </p>
+
+                    <div>
+                      <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-[10px]">Key Requirements</h4>
+                      <ul className="space-y-2.5">
+                        {j.requirements.map((req, idx) => (
+                          <li key={idx} className="text-xs flex items-start gap-2 text-muted-foreground">
+                            <span className="w-1 h-1 rounded-full bg-primary mt-1.5 shrink-0" />
+                            {req}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-
-                {/* No Footer Needed per User Request */}
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
+              )}
+            </div>
+          ))}
+        </div>
       </Section>
 
       {/* Hiring process */}
@@ -267,61 +242,57 @@ function CareersPage() {
         <SectionHeader eyebrow="Hiring process" title="Four steps. Respectful of your time." />
         <div className="grid md:grid-cols-4 gap-5">
           {["Apply", "Screen call", "Tech round", "Offer"].map((s, i) => (
-            <FadeIn key={s} delay={i * 0.08}>
-              <div className="glass-card rounded-2xl p-6">
-                <span className="text-3xl font-display font-bold gradient-text">0{i + 1}</span>
-                <h3 className="mt-3 font-semibold">{s}</h3>
-              </div>
-            </FadeIn>
+            <div key={s} className="glass-card rounded-2xl p-6">
+              <span className="text-3xl font-display font-bold gradient-text">0{i + 1}</span>
+              <h3 className="mt-3 font-semibold">{s}</h3>
+            </div>
           ))}
         </div>
       </Section>
 
       {/* Application form */}
       <Section id="application-form">
-        <FadeIn>
-          <div className="glass-card rounded-3xl p-8 md:p-10 max-w-3xl mx-auto border border-primary/20 shadow-glow">
-            <SectionHeader
-              eyebrow="Quick Apply"
-              title="Send us your application"
-              subtitle="Fill the form below OR mail us directly at hr@xciencia.com"
-              center={false}
-            />
-            <form onSubmit={submit} className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium block mb-1.5">Full name</label>
-                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
-              </div>
-              <div>
-                <label className="text-sm font-medium block mb-1.5">Email</label>
-                <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
-              </div>
-              <div>
-                <label className="text-sm font-medium block mb-1.5">Role</label>
-                <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary">
-                  {jobs.map((j) => <option key={j.role}>{j.role}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="text-sm font-medium block mb-1.5">Years of experience</label>
-                <input value={form.exp} onChange={(e) => setForm({ ...form, exp: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-sm font-medium block mb-1.5">Message + resume link</label>
-                <textarea rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
-              </div>
-              <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 items-center">
-                <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary shadow-glow hover:scale-[1.03] transition-smooth">
-                  Submit Application <ArrowRight className="w-4 h-4" />
-                </button>
-                <span className="text-muted-foreground text-sm">or</span>
-                <a href="mailto:hr@xciencia.com" className="text-primary font-semibold hover:underline flex items-center gap-2">
-                  <Mail className="w-4 h-4" /> hr@xciencia.com
-                </a>
-              </div>
-            </form>
-          </div>
-        </FadeIn>
+        <div className="glass-card rounded-3xl p-8 md:p-10 max-w-3xl mx-auto border border-primary/20 shadow-glow">
+          <SectionHeader
+            eyebrow="Quick Apply"
+            title="Send us your application"
+            subtitle="Fill the form below OR mail us directly at hr@xciencia.com"
+            center={false}
+          />
+          <form onSubmit={submit} className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium block mb-1.5">Full name</label>
+              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-sm font-medium block mb-1.5">Email</label>
+              <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-sm font-medium block mb-1.5">Role</label>
+              <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary">
+                {jobs.map((j) => <option key={j.role}>{j.role}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium block mb-1.5">Years of experience</label>
+              <input value={form.exp} onChange={(e) => setForm({ ...form, exp: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium block mb-1.5">Message + resume link</label>
+              <textarea rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 items-center">
+              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary shadow-glow hover:scale-[1.03] transition-smooth">
+                Submit Application <ArrowRight className="w-4 h-4" />
+              </button>
+              <span className="text-muted-foreground text-sm">or</span>
+              <a href="mailto:hr@xciencia.com" className="text-primary font-semibold hover:underline flex items-center gap-2">
+                <Mail className="w-4 h-4" /> hr@xciencia.com
+              </a>
+            </div>
+          </form>
+        </div>
       </Section>
     </>
   );
