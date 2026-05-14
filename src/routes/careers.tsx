@@ -196,79 +196,70 @@ function CareersPage() {
                   </div>
                 </div>
 
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button
-                      onClick={() => {
-                        setSelectedJob(j);
-                        setForm((f) => ({ ...f, role: j.role }));
-                      }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth self-start md:self-center"
-                    >
-                      Apply <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl font-display font-bold">
-                        {j.role}
-                      </DialogTitle>
-                      <DialogDescription className="flex items-center gap-4 mt-2">
-                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {j.type}</span>
-                        <span>{j.level}</span>
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {j.loc}</span>
-                      </DialogDescription>
-                    </DialogHeader>
-
-                    <div className="py-6 space-y-6">
-                      <div>
-                        <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Description</h4>
-                        <p className="text-sm leading-relaxed text-muted-foreground">{j.description}</p>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Requirements</h4>
-                        <ul className="space-y-2">
-                          {j.requirements.map((req, idx) => (
-                            <li key={idx} className="text-sm flex items-start gap-2 text-muted-foreground">
-                              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                              {req}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Mail className="w-5 h-5 text-primary" />
-                          <h4 className="font-semibold">How to Apply</h4>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          To apply for this position, please send your updated resume and portfolio link to:
-                          <a href="mailto:hr@xciencia.com" className="block mt-1 font-bold text-primary hover:underline">hr@xciencia.com</a>
-                        </p>
-                      </div>
-                    </div>
-
-                    <DialogFooter>
-                      {/* <button 
-                        onClick={() => {
-                          const element = document.getElementById("application-form");
-                          element?.scrollIntoView({ behavior: "smooth" });
-                          const closeBtn = document.querySelector('[data-radix-collection-item]') as HTMLElement;
-                          closeBtn?.click();
-                        }}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-3 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth"
-                      >
-                        Fill Form Below <ArrowRight className="w-4 h-4" />
-                      </button> */}
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                <button
+                  onClick={() => {
+                    setSelectedJob(j);
+                    setForm((f) => ({ ...f, role: j.role }));
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth self-start md:self-center"
+                >
+                  Apply <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </FadeIn>
           ))}
         </div>
+
+        <Dialog open={!!selectedJob} onOpenChange={(open) => !open && setSelectedJob(null)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            {selectedJob && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-display font-bold">
+                    {selectedJob.role}
+                  </DialogTitle>
+                  <DialogDescription className="flex items-center gap-4 mt-2">
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {selectedJob.type}</span>
+                    <span>{selectedJob.level}</span>
+                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {selectedJob.loc}</span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="py-6 space-y-6">
+                  <div>
+                    <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Description</h4>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{selectedJob.description}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Requirements</h4>
+                    <ul className="space-y-2">
+                      {selectedJob.requirements.map((req, idx) => (
+                        <li key={idx} className="text-sm flex items-start gap-2 text-muted-foreground">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                          {req}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Mail className="w-5 h-5 text-primary" />
+                      <h4 className="font-semibold">How to Apply</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      To apply for this position, please send your updated resume and portfolio link to:
+                      <a href="mailto:hr@xciencia.com" className="block mt-1 font-bold text-primary hover:underline">hr@xciencia.com</a>
+                    </p>
+                  </div>
+                </div>
+
+                {/* No Footer Needed per User Request */}
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </Section>
 
       {/* Hiring process */}
