@@ -1,9 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Briefcase, MapPin, Clock, ArrowRight, Heart, Coffee, Sparkles, Users } from "lucide-react";
+import { Briefcase, MapPin, Clock, ArrowRight, Heart, Coffee, Sparkles, Users, Mail } from "lucide-react";
 import { FadeIn } from "@/components/site/Motion";
 import { PageHero, Section, SectionHeader } from "@/components/site/Layout";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -20,17 +29,116 @@ export const Route = createFileRoute("/careers")({
 });
 
 const jobs = [
-  { role: "Python Developer", type: "Full-time", level: "Mid–Senior", loc: "Bengaluru / Hybrid" },
-  { role: "Full Stack Developer", type: "Full-time", level: "Mid", loc: "Bengaluru" },
-  { role: "AI Engineer", type: "Full-time", level: "Senior", loc: "Bengaluru / Remote" },
-  { role: "React Developer", type: "Full-time", level: "Junior–Mid", loc: "Bengaluru" },
-  { role: "UI/UX Designer", type: "Full-time", level: "Mid", loc: "Bengaluru" },
-  { role: "Software Engineer", type: "Full-time", level: "Fresher", loc: "Bengaluru" },
-  { role: "Business Development Executive", type: "Full-time", level: "Mid", loc: "Bengaluru" },
+  {
+    role: "Python Developer",
+    type: "Full-time",
+    level: "Mid–Senior",
+    loc: "Bengaluru / Hybrid",
+    description: "We are looking for a high-performance Python Developer to architect and build scalable backends, high-throughput data pipelines, and robust APIs for our mission-critical ERP and AI platforms. You will handle complex concurrency, optimization, and architectural decisions.",
+    requirements: [
+      "4+ years of professional experience with Python 3.10+ and frameworks like FastAPI or Django.",
+      "Expert knowledge of asynchronous programming (asyncio) and distributed systems architecture.",
+      "Hands-on experience with PostgreSQL optimization, Redis caching, and Celery/RabbitMQ.",
+      "Proficiency in Kubernetes, Docker, and CI/CD pipelines (GitHub Actions/Jenkins).",
+      "Ability to write clean, maintainable, and highly documented code following SOLID principles.",
+      "Experience with GraphQL, WebSockets, and OAuth2/OpenID Connect is a significant plus."
+    ]
+  },
+  {
+    role: "Full Stack Developer",
+    type: "Full-time",
+    level: "Mid",
+    loc: "Bengaluru",
+    description: "Engineer end-to-end features for our enterprise-grade SaaS products. You will be responsible for building responsive, high-performance user interfaces and the robust services that power them.",
+    requirements: [
+      "Proficiency in the T3 stack (Next.js, TypeScript, Tailwind, Prisma) or similar modern stacks.",
+      "Experience architecting complex state management in React (Zustand, Redux, or TanStack Query).",
+      "Deep understanding of Node.js, Express/NestJS, and RESTful API design.",
+      "Experience with relational databases (PostgreSQL/MySQL) and NoSQL (MongoDB/DynamoDB).",
+      "Commitment to unit and integration testing (Jest, Cypress, or Playwright).",
+      "Familiarity with serverless architectures and edge computing is highly desirable."
+    ]
+  },
+  {
+    role: "AI Engineer",
+    type: "Full-time",
+    level: "Senior",
+    loc: "Bengaluru / Remote",
+    description: "Lead the design and deployment of advanced machine learning models, LLM-powered agents, and computer vision pipelines. You will bridge the gap between research and production-grade AI.",
+    requirements: [
+      "Masters or PhD in CS, Mathematics, or AI (or 5+ years of intensive research/production experience).",
+      "Deep expertise in NLP, Computer Vision, and Generative AI (LLMs, Diffusion Models).",
+      "Mastery of PyTorch or TensorFlow, and experience with NVIDIA Triton or ONNX Runtime.",
+      "Strong experience with Vector Databases (Pinecone, Weaviate, or Milvus) and LangChain/LlamaIndex.",
+      "Knowledge of MLOps practices, model quantization, and fine-tuning techniques (LoRA/QLoRA).",
+      "Ability to translate complex business problems into viable machine learning solutions."
+    ]
+  },
+  {
+    role: "React Developer",
+    type: "Full-time",
+    level: "Junior–Mid",
+    loc: "Bengaluru",
+    description: "Craft pixel-perfect, accessible, and high-performance user interfaces. You will work closely with designers to build complex dashboards that thousands of users rely on daily.",
+    requirements: [
+      "3+ years of intensive React development experience with a strong JS/TS foundation.",
+      "Expertise in modern CSS techniques: Tailwind, CSS Modules, and Framer Motion for micro-interactions.",
+      "Deep understanding of React internals, performance profiling, and optimization techniques.",
+      "Experience with TanStack Table, TanStack Query, and complex form handling (React Hook Form/Zod).",
+      "Strong sense of design, typography, and web accessibility standards (WCAG 2.1).",
+      "Portfolio demonstrating clean UI/UX implementation and high-quality code."
+    ]
+  },
+  {
+    role: "UI/UX Designer",
+    type: "Full-time",
+    level: "Mid",
+    loc: "Bengaluru",
+    description: "Design the future of enterprise software. You will transform complex data and workflows into intuitive, beautiful, and highly functional interfaces that drive productivity.",
+    requirements: [
+      "4+ years of experience designing complex B2B SaaS or Enterprise platforms.",
+      "Advanced mastery of Figma, including advanced prototyping, auto-layout, and design system management.",
+      "Proven ability to conduct user research, create journey maps, and iterate based on data.",
+      "Strong understanding of information architecture, usability heuristics, and platform-specific guidelines.",
+      "Experience working in an Agile environment and handing off perfect specs to engineers.",
+      "Strong visual design skills with a focus on typography, color theory, and layout."
+    ]
+  },
+  {
+    role: "Software Engineer",
+    type: "Full-time",
+    level: "Fresher",
+    loc: "Bengaluru",
+    description: "An intensive, high-impact role for exceptional graduates. You will be part of an elite team building large-scale systems and will be expected to learn and contribute at an accelerated pace.",
+    requirements: [
+      "Exceptional problem-solving skills and mastery of Data Structures and Algorithms.",
+      "Proficiency in at least one systems language (C++, Rust, Go) or a high-level language (Python, JS).",
+      "Bachelor's/Master's degree in Computer Science from a premier institution (IIT/NIT/BITS or equivalent).",
+      "Demonstrated passion for tech through open-source contributions, hackathons, or personal projects.",
+      "Fast learner with the ability to work independently in a fast-paced environment.",
+      "Strong foundation in computer science fundamentals: OS, Networking, and Databases."
+    ]
+  },
+  {
+    role: "Business Development Executive",
+    type: "Full-time",
+    level: "Mid",
+    loc: "Bengaluru",
+    description: "Accelerate X-Ciencia's growth by identifying high-value opportunities and building strategic relationships with enterprise leaders in EdTech, HealthTech, and Fintech.",
+    requirements: [
+      "3+ years of experience in B2B Tech Sales or Business Development.",
+      "Deep understanding of the SaaS and Enterprise Software landscape in India and abroad.",
+      "Exceptional communication, storytelling, and negotiation skills.",
+      "Ability to understand technical requirements and map them to X-Ciencia's capabilities.",
+      "Experience with consultative selling, lead generation, and CRM management (HubSpot/Salesforce).",
+      "Self-motivated with a track record of meeting or exceeding aggressive growth targets."
+    ]
+  },
 ];
 
 function CareersPage() {
   const [form, setForm] = useState({ name: "", email: "", role: jobs[0].role, exp: "", message: "" });
+  const [selectedJob, setSelectedJob] = useState<typeof jobs[0] | null>(null);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,12 +195,76 @@ function CareersPage() {
                     </div>
                   </div>
                 </div>
-                <button
-                  onClick={() => setForm((f) => ({ ...f, role: j.role }))}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth self-start md:self-center"
-                >
-                  Apply <ArrowRight className="w-4 h-4" />
-                </button>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button
+                      onClick={() => {
+                        setSelectedJob(j);
+                        setForm((f) => ({ ...f, role: j.role }));
+                      }}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth self-start md:self-center"
+                    >
+                      Apply <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-display font-bold">
+                        {j.role}
+                      </DialogTitle>
+                      <DialogDescription className="flex items-center gap-4 mt-2">
+                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {j.type}</span>
+                        <span>{j.level}</span>
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {j.loc}</span>
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="py-6 space-y-6">
+                      <div>
+                        <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Description</h4>
+                        <p className="text-sm leading-relaxed text-muted-foreground">{j.description}</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold text-primary mb-2 uppercase tracking-wider text-xs">Requirements</h4>
+                        <ul className="space-y-2">
+                          {j.requirements.map((req, idx) => (
+                            <li key={idx} className="text-sm flex items-start gap-2 text-muted-foreground">
+                              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                              {req}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Mail className="w-5 h-5 text-primary" />
+                          <h4 className="font-semibold">How to Apply</h4>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          To apply for this position, please send your updated resume and portfolio link to:
+                          <a href="mailto:hr@xciencia.com" className="block mt-1 font-bold text-primary hover:underline">hr@xciencia.com</a>
+                        </p>
+                      </div>
+                    </div>
+
+                    <DialogFooter>
+                      {/* <button 
+                        onClick={() => {
+                          const element = document.getElementById("application-form");
+                          element?.scrollIntoView({ behavior: "smooth" });
+                          const closeBtn = document.querySelector('[data-radix-collection-item]') as HTMLElement;
+                          closeBtn?.click();
+                        }}
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-3 rounded-full text-sm font-semibold text-primary-foreground gradient-primary hover:scale-105 transition-smooth"
+                      >
+                        Fill Form Below <ArrowRight className="w-4 h-4" />
+                      </button> */}
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </FadeIn>
           ))}
@@ -115,13 +287,13 @@ function CareersPage() {
       </Section>
 
       {/* Application form */}
-      <Section>
+      <Section id="application-form">
         <FadeIn>
-          <div className="glass-card rounded-3xl p-8 md:p-10 max-w-3xl mx-auto">
+          <div className="glass-card rounded-3xl p-8 md:p-10 max-w-3xl mx-auto border border-primary/20 shadow-glow">
             <SectionHeader
-              eyebrow="Apply"
+              eyebrow="Quick Apply"
               title="Send us your application"
-              subtitle="Attach your resume link in the message. We read every submission."
+              subtitle="Fill the form below OR mail us directly at hr@xciencia.com"
               center={false}
             />
             <form onSubmit={submit} className="grid md:grid-cols-2 gap-4">
@@ -147,10 +319,14 @@ function CareersPage() {
                 <label className="text-sm font-medium block mb-1.5">Message + resume link</label>
                 <textarea rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
-              <div className="md:col-span-2">
-                <button className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary shadow-glow hover:scale-[1.03] transition-smooth">
+              <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 items-center">
+                <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary shadow-glow hover:scale-[1.03] transition-smooth">
                   Submit Application <ArrowRight className="w-4 h-4" />
                 </button>
+                <span className="text-muted-foreground text-sm">or</span>
+                <a href="mailto:hr@xciencia.com" className="text-primary font-semibold hover:underline flex items-center gap-2">
+                  <Mail className="w-4 h-4" /> hr@xciencia.com
+                </a>
               </div>
             </form>
           </div>

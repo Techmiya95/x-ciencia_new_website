@@ -76,7 +76,7 @@ function Home() {
             <FadeIn delay={0.1}>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight">
                 Transforming businesses through{" "}
-                <span className="gradient-text">intelligent software</span> solutions.
+                <span className="gradient-text">intelligent software</span> solutions Company.
               </h1>
             </FadeIn>
             <FadeIn delay={0.2}>

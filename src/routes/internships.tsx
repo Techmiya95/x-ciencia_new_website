@@ -71,12 +71,18 @@ function InternshipsPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {domains.map((d, i) => (
             <FadeIn key={d.t} delay={i * 0.04}>
-              <div className="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-smooth text-center h-full">
-                <span className="inline-flex w-12 h-12 rounded-xl gradient-primary items-center justify-center mb-3">
+              <a
+                href="https://forms.gle/bMq5RrHWdtp5YTMWA"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block glass-card rounded-2xl p-6 hover:-translate-y-1 hover:shadow-glow transition-smooth text-center h-full group"
+              >
+                <span className="inline-flex w-12 h-12 rounded-xl gradient-primary items-center justify-center mb-3 group-hover:scale-110 transition-smooth">
                   <d.icon className="w-6 h-6 text-primary-foreground" />
                 </span>
-                <h3 className="font-semibold text-sm">{d.t}</h3>
-              </div>
+                <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">{d.t}</h3>
+                <p className="mt-2 text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Apply Now</p>
+              </a>
             </FadeIn>
           ))}
         </div>
@@ -172,10 +178,19 @@ function InternshipsPage() {
                   className="w-full px-4 py-3 rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
-              <div className="md:col-span-2">
-                <button className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary shadow-glow hover:scale-[1.03] transition-smooth">
-                  Submit Application <ArrowRight className="w-4 h-4" />
-                </button>
+              <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 items-center">
+                <a
+                  href="https://forms.gle/bMq5RrHWdtp5YTMWA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold text-primary-foreground gradient-primary shadow-glow hover:scale-[1.03] transition-smooth"
+                >
+                  Apply via Google Form <ArrowRight className="w-4 h-4" />
+                </a>
+                <span className="text-muted-foreground text-sm">or</span>
+                <a href="mailto:hr@xciencia.com" className="text-primary font-semibold hover:underline">
+                  Mail us: hr@xciencia.com
+                </a>
               </div>
             </form>
           </div>
