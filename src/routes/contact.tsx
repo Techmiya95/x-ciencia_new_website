@@ -45,7 +45,7 @@ function ContactPage() {
       <Section className="!pt-4">
         <div className="grid lg:grid-cols-3 gap-5 mb-10">
           {[
-            { icon: Mail, t: "Email", lines: ["hr@xciencia.com", "xcienciatechnologies@gmail.com"] },
+            { icon: Mail, t: "Email", lines: ["hr@xciencia.com"] },
             { icon: Phone, t: "Phone", lines: ["+91 8197438159",] },
             { icon: MessageCircle, t: "WhatsApp", lines: ["+91 8197438159", "Chat with us anytime"] },
           ].map((c, i) => (
