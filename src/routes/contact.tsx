@@ -46,8 +46,8 @@ function ContactPage() {
         <div className="grid lg:grid-cols-3 gap-5 mb-10">
           {[
             { icon: Mail, t: "Email", lines: ["hr@xciencia.com"] },
-            { icon: Phone, t: "Phone", lines: ["+91 8197438159",] },
-            { icon: MessageCircle, t: "WhatsApp", lines: ["+91 8197438159", "Chat with us anytime"] },
+            { icon: Phone, t: "Phone", lines: ["+91 9591745792",] },
+            { icon: MessageCircle, t: "WhatsApp", lines: ["+91 9591745792", "Chat with us anytime"] },
           ].map((c, i) => (
             <FadeIn key={c.t} delay={i * 0.08}>
               <div className="glass-card rounded-2xl p-6 h-full">
