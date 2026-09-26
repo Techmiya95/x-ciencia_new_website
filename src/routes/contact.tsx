@@ -47,7 +47,7 @@ function ContactPage() {
           {[
             { icon: Mail, t: "Email", lines: ["hr@xciencia.com"] },
             { icon: Phone, t: "Phone", lines: ["+91 9591745792",] },
-            { icon: MessageCircle, t: "WhatsApp", lines: ["+91 9591745792", "Chat with us anytime"] },
+            { icon: MessageCircle, t: "WhatsApp", lines: ["+91  9591745792", "Chat with us anytime"] },
           ].map((c, i) => (
             <FadeIn key={c.t} delay={i * 0.08}>
               <div className="glass-card rounded-2xl p-6 h-full">
